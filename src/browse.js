@@ -1,0 +1,148 @@
+import React from 'react';
+import { Container, Card, CardMedia, CardContent, Typography, Grid, Drawer, List, ListItem, ListItemText, Checkbox, Button, Box } from '@mui/material';
+import moviesData from './data/moviesData.json';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Link } from 'react-router-dom';
+
+
+const drawerWidth = 240;
+
+const Browse = () => {
+  const [filters, setFilters] = React.useState({
+    expertPicks: false,
+    newReleases: false,
+    allMovies: true,
+    rating: {0: false, 1: false, 2: false, 3: false, 4: false, 5: false},
+    genre: {Action: false, Adventure: false, Comedy: false, Drama: false}  // Add more genres here
+  });
+
+  const handleFilterChange = (event) => {
+    if(['expertPicks', 'newReleases', 'allMovies'].includes(event.target.name)){
+      setFilters({ ...filters, [event.target.name]: event.target.checked });
+    }
+    else{
+      setFilters({ ...filters, [event.target.name]: {...filters[event.target.name], [event.target.value]: event.target.checked}});
+    }
+  };
+
+  const filteredMovies = moviesData.filter(movie => {
+    if (filters.allMovies) {
+      return true;
+    }
+    const ratings = Object.keys(filters.rating).filter(key => filters.rating[key]);
+    const genres = Object.keys(filters.genre).filter(key => filters.genre[key]);
+    return (
+      (filters.newReleases ? movie.new : true) &&
+      (filters.expertPicks ? movie.expert : true) &&
+      (ratings.length > 0 ? ratings.includes(String(movie.rating)) : true) &&
+      (genres.length > 0 ? genres.includes(movie.genre) : true)
+    );
+  });
+
+  const theme = useTheme();
+  const isScreenSizeSmOrLarger = useMediaQuery(theme.breakpoints.up('sm'));
+
+
+  return (
+    <div style={{ display: 'flex', paddingTop: '7vh'}}>
+      <Drawer
+        variant="permanent"
+        PaperProps={{
+          style: {
+            marginTop: '4rem',
+            width: drawerWidth,
+
+          },
+        }}
+      >
+        <List>
+        <ListItem>
+            <Checkbox
+              checked={filters.allMovies}
+              onChange={handleFilterChange}
+              name="allMovies"
+            />
+            <ListItemText primary="All Movies" />
+          </ListItem>
+          <ListItem>
+            <Checkbox
+              checked={filters.expertPicks}
+              onChange={handleFilterChange}
+              name="expertPicks"
+            />
+            <ListItemText primary="Expert Picks" />
+          </ListItem>
+          <ListItem>
+            <Checkbox
+              checked={filters.newReleases}
+              onChange={handleFilterChange}
+              name="newReleases"
+            />
+            <ListItemText primary="New Releases" />
+          </ListItem>
+          <Typography variant='h6'>Rating</Typography>
+          {Object.keys(filters.rating).map((rating) => (
+            <ListItem key={rating}>
+              <Checkbox
+                checked={filters.rating[rating]}
+                onChange={handleFilterChange}
+                name="rating"
+                value={rating}
+              />
+              <ListItemText primary={rating + "/5"} />
+            </ListItem>
+          ))}
+          <Typography variant='h6'>Genre</Typography>
+          {Object.keys(filters.genre).map((genre) => (
+            <ListItem key={genre}>
+              <Checkbox
+                checked={filters.genre[genre]}
+                onChange={handleFilterChange}
+                name="genre"
+                value={genre}
+              />
+              <ListItemText primary={genre} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+      <Container style={{ 
+        marginLeft: isScreenSizeSmOrLarger ? drawerWidth : 0, 
+        width: isScreenSizeSmOrLarger ? `calc(100% - ${drawerWidth}px)` : '100%',
+        height: 'calc(100vh - 10rem)', // calculate height, substract the navbar height and some padding
+        overflowY: 'auto', // make it scrollable
+      }}>
+        <Grid container spacing={3}>
+          {filteredMovies.map((movie) => (
+            <Grid item xs={12} sm={6} md={4} key={movie.id}>
+              <Card>
+                <CardMedia
+                  component="img"
+                  height="280"
+                  image={movie.image}
+                  alt={movie.title}
+                  sx={{ objectFit: 'cover' }}
+                />
+                <CardContent>
+                  <Typography variant="h5" component="div" align="center">
+                    {movie.title}
+                  </Typography>
+                  <Box display="flex" justifyContent="center">
+                    <Button variant="contained" color="primary" style={{fontSize: '12px', padding: '4px 6px', marginTop: '15px', marginBottom: '-5px'}}> 
+                        <Link to={`/movie/${movie.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                            More Info
+                        </Link>
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </div>
+  );
+};
+
+export default Browse;
