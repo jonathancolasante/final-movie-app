@@ -7,15 +7,15 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
     const carouselItems = [
-        { id: 1, src: '/images/across_the_spider-verse.jpeg'},
-        { id: 2, src: '/images/johnwick.jpeg' },
-        { id: 3, src: '/images/mario.jpeg' },
-        { id: 4, src: '/images/creed.jpg' },
-        { id: 5, src: '/images/fast10.jpg' },
-        { id: 6, src: '/images/antman.jpg'},
-        { id: 7, src: '/images/atom.jpg' },
-        { id: 8, src: '/images/shazam.jpeg' },
-        { id: 9, src: '/images/joker.jpg' },
+        { id: 1, src: process.env.PUBLIC_URL + '/images/across_the_spider-verse.jpeg'},
+        { id: 2, src: process.env.PUBLIC_URL + '/images/johnwick.jpeg' },
+        { id: 3, src: process.env.PUBLIC_URL + '/images/mario.jpeg' },
+        { id: 4, src: process.env.PUBLIC_URL + '/images/creed.jpg' },
+        { id: 5, src: process.env.PUBLIC_URL + '/images/fast10.jpg' },
+        { id: 6, src: process.env.PUBLIC_URL + '/images/antman.jpg'},
+        { id: 7, src: process.env.PUBLIC_URL + '/images/atom.jpg' },
+        { id: 8, src: process.env.PUBLIC_URL + '/images/shazam.jpeg' },
+        { id: 9, src: process.env.PUBLIC_URL + '/images/joker.jpg' },
       ];
     
       const responsive = {
