@@ -5,6 +5,11 @@ import { Container, Card, CardContent, Typography, Grid, CardMedia, List, ListIt
 import ShowtimeDialog from './components/ShowtimeDialog';
 
 const Movie = () => {
+  const moviesData = rawMoviesData.map(movie => ({
+    ...movie,
+    image: process.env.PUBLIC_URL + movie.image,
+  }));
+
   const { movieId } = useParams();
   const movie = moviesData.find(m => m.id === parseInt(movieId));
 
@@ -15,10 +20,6 @@ const Movie = () => {
   // Local state for dialog visibility
   const [openDialog, setOpenDialog] = useState(false);
 
-  const moviesData = rawMoviesData.map(movie => ({
-    ...movie,
-    image: process.env.PUBLIC_URL + movie.image,
-  }));
 
   // Handles new comment submission
   const handleNewComment = (e) => {
