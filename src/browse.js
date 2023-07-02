@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Card, CardMedia, Typography, Grid, Drawer, List, ListItem, ListItemText, Checkbox} from '@mui/material';
-import moviesData from './data/moviesData.json';
+import rawMoviesData from './data/moviesData';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Link } from 'react-router-dom';
@@ -15,6 +15,12 @@ const Browse = () => {
     rating: {0: false, 1: false, 2: false, 3: false, 4: false, 5: false},
     genre: {Action: false, Adventure: false, Comedy: false, Drama: false, Thriller: false, Horror: false}  // Add more genres here
   });
+
+
+  const moviesData = rawMoviesData.map(movie => ({
+    ...movie,
+    image: process.env.PUBLIC_URL + movie.image,
+  }));
 
   const handleFilterChange = (event) => {
     if(['expertPicks', 'newReleases'].includes(event.target.name)){

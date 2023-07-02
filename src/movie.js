@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import rawMoviesData from './data/moviesData';
 import { Container, Card, CardContent, Typography, Grid, CardMedia, List, ListItem, TextField, Button, Box, Link } from '@mui/material';
 import ShowtimeDialog from './components/ShowtimeDialog';
-import moviesData from './data/moviesData';
 
 const Movie = () => {
   const { movieId } = useParams();
