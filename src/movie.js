@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { useParams } from 'react-router-dom';
 import moviesData from './data/moviesData.json';
-import { Container, Card, CardContent, Typography, Grid, CardMedia, List, ListItem, TextField, Button, Box } from '@mui/material';
+import { Container, Card, CardContent, Typography, Grid, CardMedia, List, ListItem, TextField, Button, Box, Link } from '@mui/material';
+import ShowtimeDialog from './components/ShowtimeDialog';
 
 const Movie = () => {
   const { movieId } = useParams();
@@ -10,6 +11,9 @@ const Movie = () => {
   // Local state for comments
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+
+  // Local state for dialog visibility
+  const [openDialog, setOpenDialog] = useState(false);
 
   // Handles new comment submission
   const handleNewComment = (e) => {
@@ -20,10 +24,22 @@ const Movie = () => {
     }
   };
 
+  // Handle dialog open and close
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+  
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
+
+  // Effect to generate fake showtimes when dialog opens
+
+
   return (
     <div style={{ paddingTop: '3vh' }}>
     <Container>
-      <Typography variant="h5" align="center" style={{fontSize: "30px", marginBottom: "30px"}}>{movie.title}</Typography>
+      <Typography variant="h5" align="center" style={{fontSize: "30px", marginBottom: "30px", color: 'white', fontFamily: 'Montserrat, sans-serif', fontWeight: '500'}}>{movie.title}</Typography>
       <Grid container spacing={3}>
         {/* Image box */}
         <Grid item xs={12} md={6}>
@@ -38,35 +54,39 @@ const Movie = () => {
         </Grid>
         {/* Summary box */}
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card style={{backgroundColor: '#DFD9CF'}}>
             <CardContent>
-              <Typography variant="h5">Summary</Typography>
-              <Typography variant="body1">{movie.summary}</Typography>
+              <Typography variant="h5" style={{fontFamily: 'Montserrat, sans-serif'}}>Summary</Typography>
+              <Typography variant="body1" style={{fontFamily: 'Montserrat, sans-serif'}}>{movie.summary}</Typography>
             </CardContent>
           </Card>
         </Grid>
         {/* Details box */}
         <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent style={{marginTop: "17px"}}>
+          <Card style={{backgroundColor: '#DFD9CF'}}>
+            <CardContent style={{marginTop: "17px", fontFamily: 'Montserrat, sans-serif'}}>
               <Typography variant="h5">Details</Typography>
               <Typography variant="body1">Genre: {movie.genre}</Typography>
               <Typography variant="body1">Rating: {movie.rating}/5</Typography>
               <Typography variant="body1">Audience: {movie.audience}</Typography>
               <Typography variant="body1">Where to watch: {movie.watch}</Typography>
-              <Typography variant="body1">Length: {movie.length}</Typography>
+              <Typography variant="body1">
+                <Link href="#" onClick={handleClickOpen}>
+                  View showtime calendar
+                </Link>
+              </Typography>
             </CardContent>
           </Card>
         </Grid>
         {/* Expert reviews box */}
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card style={{backgroundColor: '#DFD9CF'}}>
             <CardContent>
-              <Typography variant="h5">Expert Reviews</Typography>
+              <Typography variant="h5" style={{fontFamily: 'Montserrat, sans-serif'}}>Expert Reviews</Typography>
               <List>
                 {movie.expertReviews.map((review, index) => (
                   <ListItem key={index}>
-                    <Typography variant="body1">{review}</Typography>
+                    <Typography variant="body1" style={{fontFamily: 'Montserrat, sans-serif'}}>{review}</Typography>
                   </ListItem>
                 ))}
               </List>
@@ -75,7 +95,7 @@ const Movie = () => {
         </Grid>
         {/* Comment section */}
         <Grid item xs={12}>
-          <Card>
+          <Card style={{backgroundColor: '#DFD9CF', fontFamily: 'Montserrat, sans-serif' }}>
             <CardContent>
               <Typography variant="h5">Comments</Typography>
               <form onSubmit={handleNewComment}>
@@ -105,6 +125,7 @@ const Movie = () => {
         </Grid>
       </Grid>
     </Container>
+    <ShowtimeDialog open={openDialog} onClose={handleClose}/>
     </div>
   );
 };

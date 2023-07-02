@@ -5,8 +5,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
+import ProgressBar from './components/ProgressBar';
 
-const Login = () => {
+const SignUpInfo = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -16,14 +17,23 @@ const Login = () => {
 
   const handleLogin = () => {
     if(email !== '' && password !== '' && name !== '' && postal !== '') {
-      navigate('/signUpPay');
+      navigate('/payment-info');
     }
   };
 
+  const [isLargeScreen, setIsLargeScreen] = React.useState(window.innerWidth > 1700);
+  
+  React.useEffect(() => {
+    const handleResize = () => setIsLargeScreen(window.innerWidth > 1700);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return(
-    <Container maxWidth="xs" style={{height: '80vh', display: 'flex', alignItems: 'center'}}>
-      <Box>
-        <Typography variant="h4" gutterBottom align="center">
+    <Container maxWidth="xs" style={{height: '80vh', display: 'flex', alignItems: 'center', flexDirection: 'column', marginTop: isLargeScreen ? '-5vh' : '0px'}}>
+      <ProgressBar currentStep={2} />
+      <Box sx={{ backgroundColor: 'white', p: 2, borderRadius: 2, width: '100%'}}>
+        <Typography variant="h4" gutterBottom align="center" style={{fontFamily: 'Montserrat, sans-serif', fontWeight: '500'}}>
           Sign Up
         </Typography>
         <TextField
@@ -102,4 +112,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUpInfo;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Button, Menu, MenuItem } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
+import logo from '../MovieSphere-2.png';
 
 
 
@@ -20,10 +21,10 @@ const NavBar = () => {
     return (
       <AppBar position="static" style={{ background: '#1B263B'}}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="logo">
-            {/* Insert your logo here */}
+          <IconButton edge="start" color="inherit" aria-label="logo" style={{marginLeft: '-25px'}}>
+            <img src={logo} alt="logo" style={{ height: '50px', width: '50px'}}/>
           </IconButton>
-          <Typography variant="h6" style={{ flexGrow: 1, fontSize: '30px', fontFamily: 'Montserrat, sans-serif' }}>
+          <Typography variant="h6" style={{ flexGrow: 1, fontSize: '30px', fontFamily: 'Montserrat, sans-serif'}}>
             <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>MovieSphere</Link>
           </Typography>
           <Button color="inherit" style={{fontSize: '20px', fontFamily: 'Montserrat, sans-serif'}}>
@@ -32,7 +33,7 @@ const NavBar = () => {
           <Button color="inherit" style={{fontSize: '20px', fontFamily: 'Montserrat, sans-serif'}}>
             <Link to="/browse" style={{ color: 'inherit', textDecoration: 'none' }}>Browse</Link>
           </Button>
-          <Button color="inherit" style={{fontSize: '20px', fontFamily: 'Montserrat, sans-serif'}}>
+          <Button color="inherit" style={{fontSize: '20px', fontFamily: 'Montserrat, sans-serif', marginRight: '15px' }}>
             <Link to="/news" style={{ color: 'inherit', textDecoration: 'none' }}>News</Link>
           </Button>
           <IconButton
@@ -49,7 +50,7 @@ const NavBar = () => {
             id="menu-appbar"
             anchorEl={anchorEl}
             anchorOrigin={{
-              vertical: 'top',
+              vertical: 'bottom',
               horizontal: 'right',
             }}
             keepMounted
@@ -59,6 +60,11 @@ const NavBar = () => {
             }}
             open={open}
             onClose={handleClose}
+            PaperProps={{
+              style: {
+                marginTop: '10px', // Add margin top to the menu
+              },
+            }}
           >
             <MenuItem onClick={handleClose}>
               <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>Login</Link>

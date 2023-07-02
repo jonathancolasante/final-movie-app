@@ -17,7 +17,7 @@ const Login = () => {
 
   return(
     <Container maxWidth="xs" style={{height: '80vh', display: 'flex', alignItems: 'center'}}>
-      <Box>
+      <Box sx={{ backgroundColor: 'white', p: 2, borderRadius: 2 }}>
         <Typography variant="h4" gutterBottom align="center">
           Sign In
         </Typography>

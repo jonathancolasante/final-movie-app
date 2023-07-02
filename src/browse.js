@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Card, CardMedia, CardContent, Typography, Grid, Drawer, List, ListItem, ListItemText, Checkbox, Button, Box } from '@mui/material';
+import { Container, Card, CardMedia, Typography, Grid, Drawer, List, ListItem, ListItemText, Checkbox} from '@mui/material';
 import moviesData from './data/moviesData.json';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -12,13 +12,12 @@ const Browse = () => {
   const [filters, setFilters] = React.useState({
     expertPicks: false,
     newReleases: false,
-    allMovies: true,
     rating: {0: false, 1: false, 2: false, 3: false, 4: false, 5: false},
-    genre: {Action: false, Adventure: false, Comedy: false, Drama: false}  // Add more genres here
+    genre: {Action: false, Adventure: false, Comedy: false, Drama: false, Thriller: false, Horror: false}  // Add more genres here
   });
 
   const handleFilterChange = (event) => {
-    if(['expertPicks', 'newReleases', 'allMovies'].includes(event.target.name)){
+    if(['expertPicks', 'newReleases'].includes(event.target.name)){
       setFilters({ ...filters, [event.target.name]: event.target.checked });
     }
     else{
@@ -27,9 +26,6 @@ const Browse = () => {
   };
 
   const filteredMovies = moviesData.filter(movie => {
-    if (filters.allMovies) {
-      return true;
-    }
     const ratings = Object.keys(filters.rating).filter(key => filters.rating[key]);
     const genres = Object.keys(filters.genre).filter(key => filters.genre[key]);
     return (
@@ -50,28 +46,21 @@ const Browse = () => {
         variant="permanent"
         PaperProps={{
           style: {
-            marginTop: '4rem',
+            marginTop: '4.2rem',
             width: drawerWidth,
+            backgroundColor: '#FAF6F0'
 
           },
         }}
       >
         <List>
-        <ListItem>
-            <Checkbox
-              checked={filters.allMovies}
-              onChange={handleFilterChange}
-              name="allMovies"
-            />
-            <ListItemText primary="All Movies" />
-          </ListItem>
           <ListItem>
             <Checkbox
               checked={filters.expertPicks}
               onChange={handleFilterChange}
               name="expertPicks"
             />
-            <ListItemText primary="Expert Picks" />
+            <ListItemText primary="Expert Picks" style={{fontFamily: 'Montserrat, sans-serif'}} />
           </ListItem>
           <ListItem>
             <Checkbox
@@ -79,9 +68,9 @@ const Browse = () => {
               onChange={handleFilterChange}
               name="newReleases"
             />
-            <ListItemText primary="New Releases" />
+            <ListItemText primary="New Releases" style={{fontFamily: 'Montserrat, sans-serif'}} />
           </ListItem>
-          <Typography variant='h6'>Rating</Typography>
+          <Typography variant='h6' style={{fontFamily: 'Montserrat, sans-serif'}}>Rating</Typography>
           {Object.keys(filters.rating).map((rating) => (
             <ListItem key={rating}>
               <Checkbox
@@ -90,10 +79,10 @@ const Browse = () => {
                 name="rating"
                 value={rating}
               />
-              <ListItemText primary={rating + "/5"} />
+              <ListItemText primary={rating + "/5"} style={{fontFamily: 'Montserrat, sans-serif'}}/>
             </ListItem>
           ))}
-          <Typography variant='h6'>Genre</Typography>
+          <Typography variant='h6' style={{fontFamily: 'Montserrat, sans-serif'}}>Genre</Typography>
           {Object.keys(filters.genre).map((genre) => (
             <ListItem key={genre}>
               <Checkbox
@@ -116,16 +105,21 @@ const Browse = () => {
         <Grid container spacing={3}>
           {filteredMovies.map((movie) => (
             <Grid item xs={12} sm={6} md={4} key={movie.id}>
-              <Card>
-                <CardMedia
-                  component="img"
-                  height="280"
-                  image={movie.image}
-                  alt={movie.title}
-                  sx={{ objectFit: 'cover' }}
-                />
-                <CardContent>
-                  <Typography variant="h5" component="div" align="center">
+              <Card 
+              sx={{ width: '100%', height: 390 }}
+              >
+                <Link to={`/movie/${movie.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    <CardMedia
+                        component="img"
+                        height="100%"
+                        image={movie.image}
+                        alt={movie.title}
+                        sx={{ objectFit: 'fill' }}
+                    />
+                </Link>
+
+{/*                 <CardContent>
+                  <Typography variant="h5" component="div" align="center" style={{fontFamily: 'Montserrat, sans-serif', fontWeight: '500'}}>
                     {movie.title}
                   </Typography>
                   <Box display="flex" justifyContent="center">
@@ -135,7 +129,7 @@ const Browse = () => {
                         </Link>
                     </Button>
                   </Box>
-                </CardContent>
+                </CardContent> */}
               </Card>
             </Grid>
           ))}

@@ -5,8 +5,9 @@ import HomeIcon from '@mui/icons-material/Home';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import SecurityIcon from '@mui/icons-material/Security';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ProgressBar from './components/ProgressBar';
 
-const Login = () => {
+const SignUpPay = () => {
   const [credit, setCredit] = useState('');
   const [security, setSecurity] = useState('');
   const [address, setAddress] = useState('');
@@ -20,10 +21,19 @@ const Login = () => {
     }
   };
 
+  const [isLargeScreen, setIsLargeScreen] = React.useState(window.innerWidth > 1700);
+  
+  React.useEffect(() => {
+    const handleResize = () => setIsLargeScreen(window.innerWidth > 1700);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return(
-    <Container maxWidth="xs" style={{height: '80vh', display: 'flex', alignItems: 'center'}}>
-      <Box>
-        <Typography variant="h4" gutterBottom align="center">
+    <Container maxWidth="xs" style={{height: '80vh', display: 'flex', alignItems: 'center', flexDirection: 'column', marginTop: isLargeScreen ? '-5vh' : '0px'}}>
+      <ProgressBar currentStep={3} />
+      <Box sx={{ backgroundColor: 'white', p: 2, borderRadius: 2}}>
+        <Typography variant="h4" gutterBottom align="center" style={{fontFamily: 'Montserrat, sans-serif', fontWeight: '500'}}>
           Sign Up
         </Typography>
         <TextField
@@ -101,4 +111,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUpPay;
