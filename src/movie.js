@@ -1,8 +1,9 @@
 import React, { useState} from 'react';
 import { useParams } from 'react-router-dom';
-import moviesData from './data/moviesData.json';
+import rawMoviesData from './data/moviesData';
 import { Container, Card, CardContent, Typography, Grid, CardMedia, List, ListItem, TextField, Button, Box, Link } from '@mui/material';
 import ShowtimeDialog from './components/ShowtimeDialog';
+import moviesData from './data/moviesData';
 
 const Movie = () => {
   const { movieId } = useParams();
@@ -14,6 +15,11 @@ const Movie = () => {
 
   // Local state for dialog visibility
   const [openDialog, setOpenDialog] = useState(false);
+
+  const moviesData = rawMoviesData.map(movie => ({
+    ...movie,
+    image: process.env.PUBLIC_URL + movie.image,
+  }));
 
   // Handles new comment submission
   const handleNewComment = (e) => {
@@ -32,9 +38,6 @@ const Movie = () => {
   const handleClose = () => {
     setOpenDialog(false);
   };
-
-  // Effect to generate fake showtimes when dialog opens
-
 
   return (
     <div style={{ paddingTop: '3vh' }}>

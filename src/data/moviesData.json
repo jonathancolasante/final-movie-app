@@ -11,15 +11,7 @@
       "expertReviews": ["Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "Lorem ipsum dolor sit amet, consectetur adipiscing elit."],
       "audience": "Rated PG",
       "watch": "Theaters",
-      "length": "2h 22m",
-      "showtimes": [
-        "2023-07-01T10:00:00Z",
-        "2023-07-01T14:00:00Z",
-        "2023-07-01T18:00:00Z",
-        "2023-07-02T10:00:00Z",
-        "2023-07-02T14:00:00Z",
-        "2023-07-02T18:00:00Z"
-      ]
+      "length": "2h 22m"
     },
     {
       "id": 2,
