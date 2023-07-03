@@ -31,7 +31,8 @@ const Movie = () => {
   };
 
   // Handle dialog open and close
-  const handleClickOpen = () => {
+  const handleClickOpen = (e) => {
+    e.preventDefault();
     setOpenDialog(true);
   };
   
