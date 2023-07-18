@@ -4,6 +4,8 @@ import rawMoviesData from './data/moviesData';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import "./BrowsePage.css"
 
 
 const drawerWidth = 240;
@@ -13,7 +15,7 @@ const Browse = () => {
     expertPicks: false,
     newReleases: false,
     rating: {0: false, 1: false, 2: false, 3: false, 4: false, 5: false},
-    genre: {Action: false, Adventure: false, Comedy: false, Drama: false, Thriller: false, Horror: false}  // Add more genres here
+    genre: {Action: false, Adventure: false, comedy: false, drama: false, Thriller: false, horror: false}  // Add more genres here
   });
 
 
@@ -45,16 +47,18 @@ const Browse = () => {
   const theme = useTheme();
   const isScreenSizeSmOrLarger = useMediaQuery(theme.breakpoints.up('sm'));
 
+  const { t } = useTranslation();
 
   return (
-    <div style={{ display: 'flex', paddingTop: '7vh'}}>
+    <div className="browsepage">
+      <div style={{ display: 'flex', paddingTop: '7vh'}}>
       <Drawer
         variant="permanent"
         PaperProps={{
           style: {
             marginTop: '4.2rem',
             width: drawerWidth,
-            backgroundColor: '#FAF6F0'
+            backgroundColor: '#DFD9CF'
 
           },
         }}
@@ -66,7 +70,7 @@ const Browse = () => {
               onChange={handleFilterChange}
               name="expertPicks"
             />
-            <ListItemText primary="Expert Picks" style={{fontFamily: 'Montserrat, sans-serif'}} />
+            <ListItemText primary={t('expert_picks')} style={{fontFamily: 'Montserrat, sans-serif'}} />
           </ListItem>
           <ListItem>
             <Checkbox
@@ -74,9 +78,9 @@ const Browse = () => {
               onChange={handleFilterChange}
               name="newReleases"
             />
-            <ListItemText primary="New Releases" style={{fontFamily: 'Montserrat, sans-serif'}} />
+            <ListItemText primary={t("new_releases")} style={{fontFamily: 'Montserrat, sans-serif'}} />
           </ListItem>
-          <Typography variant='h6' style={{fontFamily: 'Montserrat, sans-serif'}}>Rating</Typography>
+          <Typography variant='h6' style={{fontFamily: 'Montserrat, sans-serif', marginLeft: "10px"}}>{t('rating')}</Typography>
           {Object.keys(filters.rating).map((rating) => (
             <ListItem key={rating}>
               <Checkbox
@@ -88,7 +92,7 @@ const Browse = () => {
               <ListItemText primary={rating + "/5"} style={{fontFamily: 'Montserrat, sans-serif'}}/>
             </ListItem>
           ))}
-          <Typography variant='h6' style={{fontFamily: 'Montserrat, sans-serif'}}>Genre</Typography>
+          <Typography variant='h6' style={{fontFamily: 'Montserrat, sans-serif', marginLeft: "10px"}}>Genre</Typography>
           {Object.keys(filters.genre).map((genre) => (
             <ListItem key={genre}>
               <Checkbox
@@ -97,7 +101,7 @@ const Browse = () => {
                 name="genre"
                 value={genre}
               />
-              <ListItemText primary={genre} />
+              <ListItemText primary={t(genre)} />
             </ListItem>
           ))}
         </List>
@@ -105,14 +109,17 @@ const Browse = () => {
       <Container style={{ 
         marginLeft: isScreenSizeSmOrLarger ? drawerWidth : 0, 
         width: isScreenSizeSmOrLarger ? `calc(100% - ${drawerWidth}px)` : '100%',
-        height: 'calc(100vh - 10rem)', // calculate height, substract the navbar height and some padding
+        height: 'calc(100vh - 4.2rem)', // calculate height, substract the navbar height and some padding
         overflowY: 'auto', // make it scrollable
+        paddingBottom: '2rem', // add some padding at the bottom
+        marginTop: '-4.2rem', // add some padding at the top
+        paddingTop: '4rem', // add some padding at the top
       }}>
         <Grid container spacing={3}>
           {filteredMovies.map((movie) => (
             <Grid item xs={12} sm={6} md={4} key={movie.id}>
               <Card 
-              sx={{ width: '100%', height: 390 }}
+              sx={{ width: '90%', height: 390 }}
               >
                 <Link to={`/movie/${movie.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
                     <CardMedia
@@ -123,24 +130,12 @@ const Browse = () => {
                         sx={{ objectFit: 'fill' }}
                     />
                 </Link>
-
-{/*                 <CardContent>
-                  <Typography variant="h5" component="div" align="center" style={{fontFamily: 'Montserrat, sans-serif', fontWeight: '500'}}>
-                    {movie.title}
-                  </Typography>
-                  <Box display="flex" justifyContent="center">
-                    <Button variant="contained" color="primary" style={{fontSize: '12px', padding: '4px 6px', marginTop: '15px', marginBottom: '-5px'}}> 
-                        <Link to={`/movie/${movie.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                            More Info
-                        </Link>
-                    </Button>
-                  </Box>
-                </CardContent> */}
               </Card>
             </Grid>
           ))}
         </Grid>
       </Container>
+    </div>
     </div>
   );
 };

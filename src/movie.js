@@ -1,11 +1,14 @@
 import React, { useState} from 'react';
 import { useParams } from 'react-router-dom';
 import rawMoviesData from './data/moviesData';
+import rawMoviesData_fr from './data/moviesData_fr';
 import { Container, Card, CardContent, Typography, Grid, CardMedia, List, ListItem, TextField, Button, Box, Link } from '@mui/material';
 import ShowtimeDialog from './components/ShowtimeDialog';
+import { useTranslation } from 'react-i18next';
 
 const Movie = () => {
-  const moviesData = rawMoviesData.map(movie => ({
+  const { i18n } = useTranslation();
+  const moviesData = (i18n.language === 'fr' ? rawMoviesData_fr : rawMoviesData).map(movie => ({
     ...movie,
     image: process.env.PUBLIC_URL + movie.image,
   }));
@@ -40,6 +43,8 @@ const Movie = () => {
     setOpenDialog(false);
   };
 
+  const { t } = useTranslation();
+
   return (
     <div style={{ paddingTop: '3vh' }}>
     <Container>
@@ -53,14 +58,15 @@ const Movie = () => {
               height="408"
               image={movie.image}
               alt={movie.title}
+              sx={{ objectFit: 'fill' }}
             />
           </Card>
         </Grid>
         {/* Summary box */}
         <Grid item xs={12} md={6}>
-          <Card style={{backgroundColor: '#DFD9CF'}}>
+          <Card style={{height: '408px', overflow: 'auto', backgroundColor: '#DFD9CF'}}>
             <CardContent>
-              <Typography variant="h5" style={{fontFamily: 'Montserrat, sans-serif'}}>Summary</Typography>
+              <Typography variant="h5" style={{fontFamily: 'Montserrat, sans-serif'}}>{t('summary')}</Typography>
               <Typography variant="body1" style={{fontFamily: 'Montserrat, sans-serif'}}>{movie.summary}</Typography>
             </CardContent>
           </Card>
@@ -68,15 +74,15 @@ const Movie = () => {
         {/* Details box */}
         <Grid item xs={12} md={6}>
           <Card style={{backgroundColor: '#DFD9CF'}}>
-            <CardContent style={{marginTop: "17px", fontFamily: 'Montserrat, sans-serif'}}>
-              <Typography variant="h5">Details</Typography>
-              <Typography variant="body1">Genre: {movie.genre}</Typography>
-              <Typography variant="body1">Rating: {movie.rating}/5</Typography>
-              <Typography variant="body1">Audience: {movie.audience}</Typography>
-              <Typography variant="body1">Where to watch: {movie.watch}</Typography>
-              <Typography variant="body1">
+            <CardContent style={{fontFamily: 'Montserrat, sans-serif'}}>
+              <Typography variant="h5" style={{fontFamily: 'Montserrat, sans-serif', marginBottom: "10px"}}>{t('details')}</Typography>
+              <Typography variant="body1" style={{fontFamily: 'Montserrat, sans-serif'}}>Genre: {movie.genre}</Typography>
+              <Typography variant="body1" style={{fontFamily: 'Montserrat, sans-serif'}}>{t('rating')}: {movie.rating}/5</Typography>
+              <Typography variant="body1" style={{fontFamily: 'Montserrat, sans-serif'}}>Audience: {movie.audience}</Typography>
+              <Typography variant="body1" style={{fontFamily: 'Montserrat, sans-serif'}}>{t('where_to_watch')}: {movie.watch}</Typography>
+              <Typography variant="body1" style={{fontFamily: 'Montserrat, sans-serif'}}>
                 <Link href="#" onClick={handleClickOpen}>
-                  View showtime calendar
+                  {t('view_showtime_calendar')}
                 </Link>
               </Typography>
             </CardContent>
@@ -86,7 +92,7 @@ const Movie = () => {
         <Grid item xs={12} md={6}>
           <Card style={{backgroundColor: '#DFD9CF'}}>
             <CardContent>
-              <Typography variant="h5" style={{fontFamily: 'Montserrat, sans-serif'}}>Expert Reviews</Typography>
+              <Typography variant="h5" style={{fontFamily: 'Montserrat, sans-serif'}}>{t('expert_reviews')}</Typography>
               <List>
                 {movie.expertReviews.map((review, index) => (
                   <ListItem key={index}>
@@ -99,12 +105,12 @@ const Movie = () => {
         </Grid>
         {/* Comment section */}
         <Grid item xs={12}>
-          <Card style={{backgroundColor: '#DFD9CF', fontFamily: 'Montserrat, sans-serif' }}>
+          <Card style={{backgroundColor: '#DFD9CF', fontFamily: 'Montserrat, sans-serif', marginBottom:"20px"}}>
             <CardContent>
-              <Typography variant="h5">Comments</Typography>
+              <Typography variant="h5" style={{fontFamily: 'Montserrat, sans-serif'}}>{t('comments')}</Typography>
               <form onSubmit={handleNewComment}>
                 <TextField 
-                  label="New Comment" 
+                  label={t('new_comment')} 
                   value={newComment} 
                   onChange={e => setNewComment(e.target.value)} 
                   variant="outlined"
@@ -113,7 +119,7 @@ const Movie = () => {
                 />
                 <Box mt={2}>
                   <Button type="submit" variant="contained" color="primary">
-                    Add Comment
+                    {t('add_comment')}
                   </Button>
                 </Box>
               </form>

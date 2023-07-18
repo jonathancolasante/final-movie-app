@@ -6,6 +6,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
 import ProgressBar from './components/ProgressBar';
+import { useTranslation } from 'react-i18next';
 
 const SignUpInfo = () => {
   const [email, setEmail] = useState('');
@@ -29,15 +30,18 @@ const SignUpInfo = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+
+  const { t } = useTranslation();
+
   return(
     <Container maxWidth="xs" style={{height: '80vh', display: 'flex', alignItems: 'center', flexDirection: 'column', marginTop: isLargeScreen ? '-5vh' : '0px'}}>
       <ProgressBar currentStep={2} />
       <Box sx={{ backgroundColor: 'white', p: 2, borderRadius: 2, width: '100%'}}>
         <Typography variant="h4" gutterBottom align="center" style={{fontFamily: 'Montserrat, sans-serif', fontWeight: '500'}}>
-          Sign Up
+          {t('sign_up')}
         </Typography>
         <TextField
-          label="Full Name"
+          label={t('full_name')}
           variant="outlined"
           fullWidth
           margin="normal"
@@ -52,7 +56,7 @@ const SignUpInfo = () => {
           }}
         />
         <TextField
-          label="Email Address"
+          label={t('email_address')}
           variant="outlined"
           fullWidth
           margin="normal"
@@ -67,7 +71,7 @@ const SignUpInfo = () => {
           }}
         />
         <TextField
-          label="Postal Code"
+          label={t('postal_code')}
           variant="outlined"
           fullWidth
           margin="normal"
@@ -82,7 +86,7 @@ const SignUpInfo = () => {
           }}
         />
         <TextField
-          label="Password"
+          label={t("password")}
           variant="outlined"
           fullWidth
           type="password"
@@ -105,7 +109,7 @@ const SignUpInfo = () => {
           style={{marginTop: '1rem'}}
           disabled={email === '' || password === '' || name === '' || postal === ''}
         >
-          Continue
+          {t('continue')}
         </Button>
       </Box>
     </Container>

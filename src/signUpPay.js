@@ -6,6 +6,7 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import SecurityIcon from '@mui/icons-material/Security';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ProgressBar from './components/ProgressBar';
+import { useTranslation } from 'react-i18next';
 
 const SignUpPay = () => {
   const [credit, setCredit] = useState('');
@@ -16,9 +17,13 @@ const SignUpPay = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
+    localStorage.setItem('isLoggedIn', 'true');
+
     if(address !== '' && security !== '' && credit !== '' && expiry !== '') {
       navigate('/');
     }
+
+    window.location.reload();
   };
 
   const [isLargeScreen, setIsLargeScreen] = React.useState(window.innerWidth > 1700);
@@ -29,15 +34,17 @@ const SignUpPay = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const { t } = useTranslation();
+
   return(
     <Container maxWidth="xs" style={{height: '80vh', display: 'flex', alignItems: 'center', flexDirection: 'column', marginTop: isLargeScreen ? '-5vh' : '0px'}}>
       <ProgressBar currentStep={3} />
       <Box sx={{ backgroundColor: 'white', p: 2, borderRadius: 2}}>
         <Typography variant="h4" gutterBottom align="center" style={{fontFamily: 'Montserrat, sans-serif', fontWeight: '500'}}>
-          Sign Up
+          {t('sign_up')}
         </Typography>
         <TextField
-          label="Billing Address"
+          label={t('billing_address')}
           variant="outlined"
           fullWidth
           margin="normal"
@@ -52,7 +59,7 @@ const SignUpPay = () => {
           }}
         />
         <TextField
-          label="Credit Card Number"
+          label={t('credit_card_number')}
           variant="outlined"
           fullWidth
           margin="normal"
@@ -67,7 +74,7 @@ const SignUpPay = () => {
           }}
         />
         <TextField
-          label="Security Code (CCV)"
+          label={t('security_code')}
           variant="outlined"
           fullWidth
           margin="normal"
@@ -82,7 +89,7 @@ const SignUpPay = () => {
           }}
         />
         <TextField
-          label="Expiry Date"
+          label={t('expiry_date')}
           variant="outlined"
           fullWidth
           margin="normal"
@@ -104,7 +111,7 @@ const SignUpPay = () => {
           style={{marginTop: '1rem'}}
           disabled={credit === '' || expiry === '' || security === '' || address === ''}
         >
-          Continue
+          {t('continue')}
         </Button>
       </Box>
     </Container>

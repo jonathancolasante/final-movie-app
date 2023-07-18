@@ -1,8 +1,15 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Button, Menu, MenuItem } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link } from 'react-router-dom';
 import logo from '../MovieSphere-2.png';
+import { useTranslation } from 'react-i18next';
+
+import TranslateIcon from '@mui/icons-material/Translate';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -18,6 +25,50 @@ const NavBar = () => {
       setAnchorEl(null);
     };
   
+    const { t, i18n } = useTranslation();
+    const [language, setLanguage] = React.useState(i18n.language || 'en');
+
+    const toggleLanguage = () => {
+      const newLanguage = language === 'en' ? 'fr' : 'en';
+      i18n.changeLanguage(newLanguage);
+      setLanguage(newLanguage);
+    };
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+      const checkLoginStatus = () => {
+        const userIsAuthenticated = localStorage.getItem('isLoggedIn') === 'true';
+        setIsLoggedIn(userIsAuthenticated);
+      };
+  
+      // Check the login status when the component mounts
+      checkLoginStatus();
+  
+      // Add event listener for localStorage changes
+      window.addEventListener('storage', checkLoginStatus);
+  
+      // Remove event listener on cleanup
+      return () => {
+        window.removeEventListener('storage', checkLoginStatus);
+      };
+    }, []);
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+      setAnchorEl(null);
+      logoutUser();
+      setIsLoggedIn(false);
+      navigate('/');
+      window.location.reload();
+    };
+
+    function logoutUser() {
+      localStorage.removeItem('isLoggedIn');
+    }
+
+
     return (
       <AppBar position="static" style={{ background: '#1B263B'}}>
         <Toolbar>
@@ -28,14 +79,15 @@ const NavBar = () => {
             <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>MovieSphere</Link>
           </Typography>
           <Button color="inherit" style={{fontSize: '20px', fontFamily: 'Montserrat, sans-serif'}}>
-            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>Home</Link>
+            <Link to="/" style={{ color: isLoggedIn ? 'inherit' : 'grey', textDecoration: 'none', pointerEvents: isLoggedIn ? "auto": "none"  }}>{t('home')}</Link>
           </Button>
           <Button color="inherit" style={{fontSize: '20px', fontFamily: 'Montserrat, sans-serif'}}>
-            <Link to="/browse" style={{ color: 'inherit', textDecoration: 'none' }}>Browse</Link>
+            <Link to="/browse" style={{ color: isLoggedIn ? 'inherit' : 'grey', textDecoration: 'none', pointerEvents: isLoggedIn ? "auto": "none"  }}>{t('browse')}</Link>
           </Button>
           <Button color="inherit" style={{fontSize: '20px', fontFamily: 'Montserrat, sans-serif', marginRight: '15px' }}>
-            <Link to="/news" style={{ color: 'inherit', textDecoration: 'none' }}>News</Link>
+            <Link to="/news" style={{ color: isLoggedIn ? 'inherit' : 'grey', textDecoration: 'none', pointerEvents: isLoggedIn ? "auto": "none" }}>{t('news')}</Link>
           </Button>
+
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -66,13 +118,28 @@ const NavBar = () => {
               },
             }}
           >
-            <MenuItem onClick={handleClose}>
-              <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>Login</Link>
+            <MenuItem onClick={toggleLanguage}>
+              <TranslateIcon style={{ marginRight: "8px" }}/>
+              {language === 'en' ? 'Français' : 'English'}
             </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Link to="/membership" style={{ color: 'inherit', textDecoration: 'none' }}>Sign Up</Link>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            {!(isLoggedIn) && (
+              <MenuItem onClick={handleClose}>
+                <LoginIcon style={{ marginRight: "8px" }}/>
+                <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>{t('login')}</Link>
+              </MenuItem>
+            )}
+            {!(isLoggedIn) && (
+              <MenuItem onClick={handleClose}>
+                <AccountBoxIcon style={{ marginRight: "8px" }}/>
+                <Link to="/membership" style={{ color: 'inherit', textDecoration: 'none' }}>{t('sign_up')}</Link>
+              </MenuItem>
+            )}
+            {isLoggedIn && (
+              <MenuItem onClick={handleLogout}>
+                <LogoutIcon style={{ marginRight: "8px" }}/>
+                {t('logout')}
+              </MenuItem>
+            )}
           </Menu>
         </Toolbar>
       </AppBar>

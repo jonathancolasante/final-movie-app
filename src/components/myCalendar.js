@@ -5,93 +5,52 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
 
-// Generate some fake data
-const events = [
-    {
-        start: new Date(2023, 6, 7, 9, 0),
-        end: new Date(2023, 6, 7, 11, 0),
-    },
-    {
-      start: new Date(2023, 6, 7, 13, 0),
-      end: new Date(2023, 6, 7, 15, 0),
-    },
-    {
-      start: new Date(2023, 6, 7, 17, 0),
-      end: new Date(2023, 6, 7, 19, 0),
-    },
+const generateEvents = (startDate, endDate) => {
+  let events = [];
+  let currentDate = new Date(startDate);
+  
+  while(currentDate <= endDate) {
+    // Set 1: days with even date
+    if(currentDate.getDate() % 2 === 0) {
+      events.push(
         {
-        start: new Date(2023, 6, 6, 8, 0),
-        end: new Date(2023, 6, 6, 10, 0),
-    },
-    {
-      start: new Date(2023, 6, 6, 14, 0),
-      end: new Date(2023, 6, 6, 16, 0),
-    },
-    {
-      start: new Date(2023, 6, 6, 17, 0),
-      end: new Date(2023, 6, 6, 19, 0),
-    },
-    {
-      start: new Date(2023, 6, 9, 9, 0),
-      end: new Date(2023, 6, 9, 11, 0),
-  },
-  {
-    start: new Date(2023, 6, 9, 13, 0),
-    end: new Date(2023, 6, 9, 15, 0),
-  },
-  {
-    start: new Date(2023, 6, 9, 17, 0),
-    end: new Date(2023, 6, 9, 19, 0),
-  },
-      {
-      start: new Date(2023, 6, 8, 8, 0),
-      end: new Date(2023, 6, 8, 10, 0),
-  },
-  {
-    start: new Date(2023, 6, 8, 14, 0),
-    end: new Date(2023, 6, 8, 16, 0),
-  },
-  {
-    start: new Date(2023, 6, 8, 17, 0),
-    end: new Date(2023, 6, 8, 19, 0),
-  },
-    {
-        start: new Date(2023, 6, 4, 9, 0),
-        end: new Date(2023, 6, 4, 11, 0),
-    },
-    {
-      start: new Date(2023, 6, 4, 13, 0),
-      end: new Date(2023, 6, 4, 15, 0),
-    },
-    {
-      start: new Date(2023, 6, 4, 17, 0),
-      end: new Date(2023, 6, 4, 19, 0),
-    },
-    {
-        start: new Date(2023, 6, 5, 8, 0),
-        end: new Date(2023, 6, 5, 10, 0),
-    },
-    {
-      start: new Date(2023, 6, 5, 14, 0),
-      end: new Date(2023, 6, 5, 16, 0),
-    },
-    {
-      start: new Date(2023, 6, 5, 17, 0),
-      end: new Date(2023, 6, 5, 19, 0),
-    },
-    {
-        start: new Date(2023, 6, 3, 8, 0),
-        end: new Date(2023, 6, 3, 10, 0),
-    },
-    {
-      start: new Date(2023, 6, 3, 14, 0),
-      end: new Date(2023, 6, 3, 16, 0),
-    },
-    {
-      start: new Date(2023, 6, 3, 17, 0),
-      end: new Date(2023, 6, 3, 19, 0),
-    },
-  ];
+          start: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 8, 0),
+          end: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 10, 0),
+        },
+        {
+          start: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 14, 0),
+          end: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 16, 0),
+        },
+        {
+          start: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 17, 0),
+          end: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 19, 0),
+        }
+      );
+    } else {  // Set 2: days with odd date
+      events.push(
+        {
+          start: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 9, 0),
+          end: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 11, 0),
+        },
+        {
+          start: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 13, 0),
+          end: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 15, 0),
+        },
+        {
+          start: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 17, 0),
+          end: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 19, 0),
+        }
+      );
+    }
+    // Increase currentDate by 1 day
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return events;
+};
+
+// Generate events for 1 month starting from July 6, 2023
+const events = generateEvents(new Date(2023, 6, 6), new Date(2023, 9, 6));
 
 export default function MyCalendar() {
 
@@ -103,6 +62,11 @@ export default function MyCalendar() {
         setCurrentDate(newDate);
       }
     };
+
+    const minTime = new Date();
+    minTime.setHours(7, 0, 0);
+    const maxTime = new Date();
+    maxTime.setHours(22, 0, 0);
 
     return (
         <div style={{ height: 500 }}>
@@ -116,8 +80,9 @@ export default function MyCalendar() {
             date={currentDate}
             onNavigate={handleNavigate}
             toolbar={false}
+            min={minTime}
+            max={maxTime}
           />
         </div>
-
       );
 }

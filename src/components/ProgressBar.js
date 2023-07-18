@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Circle = ({ color, text }) => (
   <div style={{ 
@@ -38,6 +39,8 @@ const ProgressBar = ({ currentStep }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const { t } = useTranslation();
+
   return (
     <div style={{ 
         display: 'flex', 
@@ -48,11 +51,11 @@ const ProgressBar = ({ currentStep }) => {
         top: isLargeScreen ? '-90px' : '0px' ,
         marginBottom: isLargeScreen ? '-20px' : '0px'
     }}>
-      <Circle color={currentStep >= 1 ? 'green' : 'grey'} text="Membership" />
+      <Circle color={currentStep >= 1 ? 'green' : 'grey'} text={t('membership')} />
       <Arrow />
       <Circle color={currentStep >= 2 ? 'green' : 'grey'} text="Info" />
       <Arrow />
-      <Circle color={currentStep >= 3 ? 'green' : 'grey'} text="Payment" />
+      <Circle color={currentStep >= 3 ? 'green' : 'grey'} text={t('payment')} />
     </div>
   );
 };

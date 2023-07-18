@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { makeStyles } from '@mui/styles';
 
 const Home = () => {
     const carouselItems = [
@@ -37,12 +39,37 @@ const Home = () => {
         }
       };
     
+
+      const { t } = useTranslation();
     
+
+      const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+      useEffect(() => {
+        const checkLoginStatus = () => {
+          const userIsAuthenticated = localStorage.getItem('isLoggedIn') === 'true';
+          setIsLoggedIn(userIsAuthenticated);
+        };
+    
+        // Check the login status when the component mounts
+        checkLoginStatus();
+    
+        // Add event listener for localStorage changes
+        window.addEventListener('storage', checkLoginStatus);
+    
+        // Remove event listener on cleanup
+        return () => {
+          window.removeEventListener('storage', checkLoginStatus);
+        };
+      }, []);
+
+
+
       return (
         <div>
           <div style={{ paddingTop: '20vh' }}>
             <Typography variant="h4" align="center" style={{color: 'white', fontFamily: 'Montserrat, sans-serif'}} gutterBottom>
-              Get access to in-depth information for every movie!
+              {t('access_info')}
             </Typography>
             <div style={{ maxWidth: '40%', margin: 'auto', padding: '20px 0', textAlign: 'center' }}>
               <Carousel responsive={responsive}>
@@ -55,17 +82,59 @@ const Home = () => {
             </div>
     
             <Box display="flex" justifyContent="center" mt={3}>
-              <Button 
-                style={{
-                  color: 'white',
-                  backgroundColor: '#354970',
-                  fontFamily: 'Montserrat, sans-serif',
-                  padding: '5px 10px',
-                  fontSize: '20px'
-                }}
-              >
-                <Link to="/browse" style={{ color: 'inherit', textDecoration: 'none' }}>Browse</Link>
-              </Button>
+              {isLoggedIn ? (
+                <Button 
+                  sx={{
+                    color: 'white',
+                    backgroundColor: '#354970',
+                    fontFamily: 'Montserrat, sans-serif',
+                    padding: '5px 10px',
+                    marginRight: '15px',
+                    fontSize: '20px',
+                    transition: '0.3s',
+                    '&:hover': {
+                      backgroundColor: '#466582',
+                    },
+                  }}
+                >
+                  <Link to="/browse" style={{ color: 'inherit', textDecoration: 'none' }}>{t('browse')}</Link>
+                </Button>
+              ) : (
+                <>
+                  <Button 
+                    sx={{
+                      color: 'white',
+                      backgroundColor: '#354970',
+                      fontFamily: 'Montserrat, sans-serif',
+                      padding: '5px 10px',
+                      marginRight: '15px',
+                      fontSize: '20px',
+                      transition: '0.3s',
+                      '&:hover': {
+                        backgroundColor: '#466582',
+                      },
+                    }}
+                  >
+                    <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>{t('login')}</Link>
+                  </Button>
+                  <Button 
+                    sx={{
+                      color: 'white',
+                      backgroundColor: '#354970',
+                      fontFamily: 'Montserrat, sans-serif',
+                      padding: '5px 10px',
+                      marginRight: '15px',
+                      fontSize: '20px',
+                      transition: '0.3s',
+                      '&:hover': {
+                        backgroundColor: '#466582',
+                      },
+                    }}
+                  >
+                    <Link to="/membership" style={{ color: 'inherit', textDecoration: 'none' }}>{t('sign_up')}</Link>
+                  </Button>
+                </>
+              )}
             </Box>
           </div>
         </div>

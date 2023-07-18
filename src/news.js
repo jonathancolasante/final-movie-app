@@ -1,18 +1,38 @@
 import React from 'react';
 import { Container, Card, CardContent, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const News = () => {
+  const { t } = useTranslation();
+
+  const newsPieces = [
+    {
+      title: t('news_article_1'),
+      content: t('content_1')
+    },
+    {
+      title: t('news_article_2'),
+      content: t('content_2')
+    },
+    {
+      title: t('news_article_3'),
+      content: t('content_3')
+    },
+    // add more news pieces as needed
+  ];
+
   return (
     <div style={{paddingTop: "10vh"}}>
+      <Typography variant="h5" align="center" style={{fontSize: "30px", color: 'white', fontFamily: 'Montserrat, sans-serif', fontWeight: '500'}}>Latest News</Typography>
       <Container maxWidth="lg">
-        {[1, 2, 3].map((num) => (
-          <Card style={{marginTop: 40}}>
+        {newsPieces.map((newsPiece) => (
+          <Card style={{marginTop: 40, backgroundColor: "#DFD9CF"}}>
             <CardContent>
               <Typography variant="h5" component="div" style={{fontFamily: 'Montserrat, sans-serif', fontWeight: '500'}}>
-                News Piece {num}
+                {newsPiece.title}
               </Typography>
-              <Typography variant="body2" color="text.secondary" style={{fontFamily: 'Montserrat, sans-serif'}}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <Typography variant="body2" color="text.secondary" style={{fontFamily: 'Montserrat, sans-serif', color:"black"}}>
+                {newsPiece.content}
               </Typography>
             </CardContent>
           </Card>

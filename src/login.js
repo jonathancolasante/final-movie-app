@@ -3,6 +3,7 @@ import { TextField, Button, Container, Typography, InputAdornment, Box } from '@
 import { useNavigate } from 'react-router-dom';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -10,19 +11,26 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
+    localStorage.setItem('isLoggedIn', 'true');
+
     if(email !== '' && password !== '') {
       navigate('/');
     }
+
+    window.location.reload();
   };
+
+
+  const { t } = useTranslation();
 
   return(
     <Container maxWidth="xs" style={{height: '80vh', display: 'flex', alignItems: 'center'}}>
       <Box sx={{ backgroundColor: 'white', p: 2, borderRadius: 2 }}>
         <Typography variant="h4" gutterBottom align="center">
-          Sign In
+          {t('login')}
         </Typography>
         <TextField
-          label="Email Address"
+          label={t('email_address')}
           variant="outlined"
           fullWidth
           margin="normal"
@@ -37,7 +45,7 @@ const Login = () => {
           }}
         />
         <TextField
-          label="Password"
+          label={t('password')}
           variant="outlined"
           fullWidth
           type="password"
@@ -60,7 +68,7 @@ const Login = () => {
           style={{marginTop: '1rem'}}
           disabled={email === '' || password === ''}
         >
-          Sign In
+          {t('login')}
         </Button>
       </Box>
     </Container>
