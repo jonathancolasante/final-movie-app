@@ -72,7 +72,13 @@ const Home = () => {
               {t('access_info')}
             </Typography>
             <div style={{ maxWidth: '40%', margin: 'auto', padding: '20px 0', textAlign: 'center' }}>
-              <Carousel responsive={responsive}>
+              <Carousel 
+              responsive={responsive}
+              autoPlay={true}
+              autoPlaySpeed={2000}
+              autoPlayActionDisabled={true}
+              infinite={true}
+              >
                 {carouselItems.map((item) => (
                   <div key={item.id} style={{ padding: '0 10px' }}>
                     <img src={item.src} alt="Movie poster" style={{ width: '100%', height: '300px', objectFit: 'cover' }} />
