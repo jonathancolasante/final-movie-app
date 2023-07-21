@@ -22,7 +22,7 @@ const Membership = () => {
             {t('purchase')}
           </Typography>
           <Typography variant="body2" gutterBottom style={{fontFamily: 'Montserrat, sans-serif', textAlign: "center", color: "black"}}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vel pulvinar nisi. Mauris a scelerisque massa. Vivamus at felis commodo, rutrum purus non, tincidunt dui. Sed massa nunc, euismod at velit nec, venenatis fermentum libero. Aenean ultricies bibendum mauris, nec tempor sem. Duis a libero nisl. 
+           {t('membership_text')}
           </Typography>
         </CardContent>
         <Button variant="contained" color="primary" sx={{ mt: 3, marginTop: "-5px", marginBottom: "10px", marginLeft: "170px"}}>

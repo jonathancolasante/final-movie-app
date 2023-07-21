@@ -15,7 +15,7 @@ const Browse = () => {
     expertPicks: false,
     newReleases: false,
     rating: {0: false, 1: false, 2: false, 3: false, 4: false, 5: false},
-    genre: {Action: false, Adventure: false, comedy: false, drama: false, Thriller: false, horror: false}  // Add more genres here
+    genre: {Action: false, Adventure: false, Comedy: false, Drama: false, Horror: false, test: false}  // Add more genres here
   });
 
 
