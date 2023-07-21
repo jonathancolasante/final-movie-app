@@ -13,11 +13,21 @@ const SignUpInfo = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [postal, setPostal] = useState('');
+  const [emailError, setEmailError] = useState(false);
   
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if(email !== '' && password !== '' && name !== '' && postal !== '') {
+    const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+
+    if (!emailValid) {
+      setEmailError(true);
+      return;
+    } else {
+      setEmailError(false);
+    }
+
+    if(emailValid && password !== '' && name !== '' && postal !== '') {
       navigate('/payment-info');
     }
   };
@@ -29,7 +39,6 @@ const SignUpInfo = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
 
   const { t } = useTranslation();
 
@@ -69,6 +78,8 @@ const SignUpInfo = () => {
               </InputAdornment>
             ),
           }}
+          error={emailError}
+          helperText={emailError && t('Invalid email')}
         />
         <TextField
           label={t('postal_code')}

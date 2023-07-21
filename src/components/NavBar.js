@@ -9,6 +9,8 @@ import TranslateIcon from '@mui/icons-material/Translate';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import HelpIcon from '@mui/icons-material/Help';
+
 import { useNavigate } from 'react-router-dom';
 
 
@@ -121,6 +123,10 @@ const NavBar = () => {
             <MenuItem onClick={toggleLanguage}>
               <TranslateIcon style={{ marginRight: "8px" }}/>
               {language === 'en' ? 'Français' : 'English'}
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <HelpIcon style={{ marginRight: "8px" }}/>
+              <Link to="/help" style={{ color: 'inherit', textDecoration: 'none' }}>{t('help')}</Link>
             </MenuItem>
             {!(isLoggedIn) && (
               <MenuItem onClick={handleClose}>

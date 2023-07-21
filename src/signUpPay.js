@@ -13,17 +13,34 @@ const SignUpPay = () => {
   const [security, setSecurity] = useState('');
   const [address, setAddress] = useState('');
   const [expiry, setExpiry] = useState('');
+  const [creditError, setCreditError] = useState(false);
+  const [securityError, setSecurityError] = useState(false);
   
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    localStorage.setItem('isLoggedIn', 'true');
+    const creditValid = !isNaN(credit);
+    const securityValid = !isNaN(security);
 
-    if(address !== '' && security !== '' && credit !== '' && expiry !== '') {
-      navigate('/');
+    if (!creditValid) {
+      setCreditError(true);
+      return;
+    } else {
+      setCreditError(false);
     }
 
-    window.location.reload();
+    if (!securityValid) {
+      setSecurityError(true);
+      return;
+    } else {
+      setSecurityError(false);
+    }
+
+    if(creditValid && securityValid && address !== '' && expiry !== '') {
+      localStorage.setItem('isLoggedIn', 'true');
+      navigate('/');
+      window.location.reload();
+    }
   };
 
   const [isLargeScreen, setIsLargeScreen] = React.useState(window.innerWidth > 1700);
@@ -72,6 +89,8 @@ const SignUpPay = () => {
               </InputAdornment>
             ),
           }}
+          error={creditError}
+          helperText={creditError && t('Invalid credit card number')}
         />
         <TextField
           label={t('security_code')}
@@ -87,6 +106,8 @@ const SignUpPay = () => {
               </InputAdornment>
             ),
           }}
+          error={securityError}
+          helperText={securityError && t('Invalid security code')}
         />
         <TextField
           label={t('expiry_date')}

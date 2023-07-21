@@ -10,6 +10,7 @@ import Login from './login';
 import Membership from './membership';
 import SignUpInfo from './signUpInfo';
 import SignUpPay from './signUpPay';
+import Help from './help';
 
 import i18n from './i18n'; // Import i18n
 import { I18nextProvider } from 'react-i18next'; // Import I18nextProvider
@@ -33,6 +34,7 @@ const App = () => {
             <Route path='/membership' element={<Membership />} />
             <Route path='/personal-info' element={<SignUpInfo />} />
             <Route path='/payment-info' element={<SignUpPay />} />
+            <Route path='/help' element={<Help />} />
           </Routes>
         </HashRouter>
       </Suspense>

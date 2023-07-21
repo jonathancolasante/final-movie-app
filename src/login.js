@@ -8,18 +8,25 @@ import { useTranslation } from 'react-i18next';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    localStorage.setItem('isLoggedIn', 'true');
+    const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
 
-    if(email !== '' && password !== '') {
-      navigate('/');
+    if (!emailValid) {
+      setEmailError(true);
+      return;
+    } else {
+      setEmailError(false);
     }
 
-    window.location.reload();
+    if(emailValid && password !== '') {
+      localStorage.setItem('isLoggedIn', 'true');
+      navigate('/');
+      window.location.reload();
+    }
   };
-
 
   const { t } = useTranslation();
 
@@ -43,6 +50,8 @@ const Login = () => {
               </InputAdornment>
             ),
           }}
+          error={emailError}
+          helperText={emailError && t('Invalid email')}
         />
         <TextField
           label={t('password')}
